@@ -1,6 +1,6 @@
 let f = Equ(And(Symb "a", Symb "c"),Or(Not(Symb "b"),Imp(Symb "c",And(Bot,Top))));;
 let f1 = Equ(And(Symb "a", Symb "b"), Or(Not(Symb "a"), Symb "b"));;
-
+let f0 = Or(And(Symb "a", Symb "b"), Not(Symb "a"));;
 let rec nbc: prop -> int = function
     | Symb a -> 0
     | Top | Bot -> 0

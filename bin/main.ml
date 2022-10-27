@@ -23,3 +23,4 @@ let affiche_symb: prop -> string = function
 
 #use "syntaxe.ml";;
 #use "semantique.ml";;
+#use "satisfiabilite.ml";;
