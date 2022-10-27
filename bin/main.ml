@@ -1,4 +1,5 @@
 #use "types.ml";;
+#use "tools.ml";;
 
 let priority: prop -> int = function
   | Equ(g,d) -> 0
@@ -21,3 +22,4 @@ let affiche_symb: prop -> string = function
 ;;
 
 #use "syntaxe.ml";;
+#use "semantique.ml";;
