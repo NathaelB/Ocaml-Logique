@@ -8,3 +8,11 @@ type prop =
   | Imp of prop * prop
   | Equ of prop * prop
 ;;
+
+type valVerite =
+    | Zero
+    | Un
+;;
+
+type interpretation = (string * valVerite) list;;
+type interpretationList = interpretation list;;
