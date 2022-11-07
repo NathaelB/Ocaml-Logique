@@ -1,8 +1,9 @@
 let rec intSymb: string -> interpretation -> valVerite = fun s i ->
     match i with
     | [] -> Zero
-    | (x,y)::l when x=s -> y
-    | _::l -> intSymb s l
+    | (x,y)::l ->
+      if x=s then y
+      else intSymb s l
 ;;
 
 let intNeg: valVerite -> valVerite = function

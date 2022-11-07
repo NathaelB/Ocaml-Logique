@@ -1,6 +1,23 @@
-let f = Equ(And(Symb "a", Symb "c"),Or(Not(Symb "b"),Imp(Symb "c",And(Bot,Top))));;
 let f1 = Equ(And(Symb "a", Symb "b"), Or(Not(Symb "a"), Symb "b"));;
-let f0 = Or(And(Symb "a", Symb "b"), Not(Symb "a"));;
+let f2 = Or(Not(And(Symb "a", Not(Symb "b"))), Not(Imp(Symb "a", Symb "b")));;
+let f3 = And(Not(Imp(Symb "a", Or(Symb "a", Symb "b"))), Not(Not(And(Symb "a", Or(Symb "b", Not(Symb "c"))))));;
+let f4 = And(
+	Or(Not(Symb "a"), Or(Symb "b", Symb "d")),
+	And(
+		Or(Not(Symb "d"), Symb "c"),
+		And(
+			Or(Symb "c", Symb "a"),
+			And(
+				Or(Not(Symb "c"), Symb "b"),
+				And(
+					Or(Not(Symb "c"), Not(Symb "b")),
+					Or(Not(Symb "b"), Symb "d")
+				)
+			)
+		)
+	)
+);;
+
 let rec nbc: prop -> int = function
     | Symb a -> 0
     | Top | Bot -> 0
@@ -17,11 +34,12 @@ let rec prof: prop -> int = function
         -> 1 + (max (prof g) (prof d))
 ;;
 
-let rec ajouteSiPasDedans: string list -> string -> string list = fun li a ->
-    match li with
-    | [] -> [a]
-    | e::l when e!=a -> e::ajouteSiPasDedans l a
-    | _::l -> l
+let rec ajouteSiPasDedans: string list -> string -> string list = fun liste x ->
+  match liste with
+  | [] -> [x]
+  | e::l ->
+      if e=x then e::l
+      else e::ajouteSiPasDedans l x
 ;;
 
 let rec union: string list -> string list -> string list = fun l1 l2 ->
@@ -48,16 +66,16 @@ let rec affiche: prop -> string = fun fbf ->
         -> "(" ^ affiche g ^ affiche_symb fbf ^ affiche d ^ ")"
 ;;
 
-let rec affichePriBis: prop -> prop -> string = fun fbf symb ->
-    let prio = (fun a b -> priority a >= priority b) fbf symb in
+let rec affichePri2: prop -> prop -> string = fun fbf symb ->
+  let prio = (fun a b -> priority a >= priority b) fbf symb in
 
-    match fbf with
-    | Symb _ | Top | Bot -> affiche_symb fbf
-    | Not a -> affiche_symb fbf ^ affichePriBis a fbf
-    | And (g,d) | Or (g,d) | Imp (g,d) | Equ (g,d) ->
-        match (g,d) with
-        | _ when prio -> affichePriBis g fbf ^ affiche_symb fbf ^ affichePriBis d fbf
-        | _ -> "(" ^ affichePriBis g fbf ^ affiche_symb fbf ^ affichePriBis d fbf ^ ")"
+  match fbf with
+  | Symb _
+  | Top | Bot -> affiche_symb fbf
+  | Not a -> affiche_symb fbf ^ affichePri2 a fbf
+  | And (g,d) | Or (g,d) | Imp (g,d) | Equ (g,d)
+    -> if prio then affichePri2 g fbf ^ affiche_symb fbf ^ affichePri2 d fbf
+      else "(" ^ affichePri2 g fbf ^ affiche_symb fbf ^ affichePri2 d fbf ^ ")"
 ;;
 
 let affichePri: prop -> string = fun fbf ->

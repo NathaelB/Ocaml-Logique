@@ -1,6 +1,10 @@
 #use "types.ml";;
 #use "tools.ml";;
 
+(*
+@params: prop
+@return int
+*)
 let priority: prop -> int = function
   | Equ(g,d) -> 0
   | Imp(g,d) -> 1
@@ -10,6 +14,11 @@ let priority: prop -> int = function
   | _ -> 5
 ;;
 
+(*
+@params: prop
+@return: string
+-> affiche_symb (And(Symb "a", Symb "b"))
+*)
 let affiche_symb: prop -> string = function
   | Symb a ->  a
   | Top ->  "⊤"
@@ -24,3 +33,4 @@ let affiche_symb: prop -> string = function
 #use "syntaxe.ml";;
 #use "semantique.ml";;
 #use "satisfiabilite.ml";;
+#use "equivalence_consequence.ml";;
